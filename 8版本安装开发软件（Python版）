@@ -1,0 +1,126 @@
+rpm -qa | grep mariadb 查看已安装的mariadb
+删除：rpm -e --nodeps mariadb名称
+再查看一次：rpm -qa | grep mariadb 看是否存在
+
+yum clean all
+yum makecache
+
+1：安装libffi-devel -y 
+yum install libffi-devel -y 
+
+2：安装gcc
+yum install -y gcc gcc-c++ openssl-devel zlib-devel
+
+3.安装make
+yum install make
+
+一、安装mysql
+1：进入/usr/local目录下 ,创建mysql文件夹
+
+2：使用命令“yum install wget 安装wget，接下来在线安装mysql。使用命令
+wget http://dev.mysql.com/get/Downloads/mysql80-community-release-el8-1.noarch.rpm
+
+3：安装mysql80-community-release-el8-1.noarch.rpm包。
+使用命令 rpm -ivh mysql80-community-release-el8-1.noarch.rpm.rpm
+
+4：使用命令 “yum install mysql-server -y”安装mysql。
+
+5：默认安装目录 /usr/share/mysql
+如果需要取消大小写敏感，请在启动mysql之前进行设置：
+（1）打开mysql配置文件
+vim /etc/my.cnf.d/mysql-server.cnf
+（2）尾部追加一行
+lower_case_table_names=1
+并保存，然后再初始化数据库。
+
+6：安装完成后启动mysql服务，
+systemctl start mysqld
+验证是否启动
+systemctl status mysqld
+
+7：更新root密码，暂时没有密码
+mysql -u root -p 
+输入上面随机的密码
+ALTER USER 'root'@'localhost' IDENTIFIED BY '你的密码（包含大小写、数字和特殊字符）';
+use mysql;
+update user set host = '%' where user = 'root';
+
+8：修改加密规则，如果提示%错误，可以再执行一遍
+ALTER USER 'root'@'%' IDENTIFIED BY '你设置的密码' PASSWORD EXPIRE NEVER;
+
+9：更新 root 用户密码（允许navicat登录）
+ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY '你设置的密码';
+
+10：刷新权限
+FLUSH PRIVILEGES;
+
+11：更新root密码否则，远程登录会报错
+ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY '你设置的密码';
+
+二、安装datagrip
+1：下载软件：https://www.jetbrains.com/datagrip/?fromMenu
+
+2：解压软件：下载之后解压缩
+tar xvf datagrip-2018.2.4.tar.gz 
+
+3：汉化
+进入DataGrip-2019.2.6/lib/把resources_en.jar删除，然后把resources_cn.jar复制到lib的目录里
+
+4：添加快捷方式
+cd /usr/share/applications
+vim DataGrip.Desktop
+
+[Desktop Entry]
+Name=DataGrip
+Type=Application
+Exec=/opt/datagrip/DataGrip-2018.2.4/bin/datagrip.sh 
+Icon=/opt/datagrip/DataGrip-2018.2.4/bin/datagrip.png
+Terminal=false
+
+记得要:wq保存退出
+
+cp /usr/share/applications/DataGrip.Desktop /root/桌面/
+
+chown root /root/桌面/DataGrip.Desktop
+
+
+
+三、安装python3.8
+wget https://www.python.org/ftp/python/3.8.0/Python-3.8.0b2.tgz
+tar -zxvf Python-3.8.0b2.tgz
+cd Python-3.8.0b2
+mkdir /usr/local/python3
+./configure --prefix=/usr/local/python3
+./configure --enable-optimizations
+make && make install
+设置软链接:ln -s /usr/local/python3/bin/python3.8 /usr/bin/python3
+测试：python3
+
+四、安装pycharm
+
+wget https://download.jetbrains.com/python/pycharm-community-2019.2.3.tar.gz
+tar -zxvf pycharm-community-2019.2.3.tar.gz 
+cd pycharm-community-2019.2.3/
+cd bin
+./pycharm.sh
+
+创建快捷方式：vim /usr/share/applications/pycharm.desktop
+输入以下内容
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Encoding=UTF-8
+Name=Pycharm-2019.2.3
+Comment=Pycharm-community-2019.2.3.
+Exec=/usr/local/Soft/pycharm-community-2019.2.3/bin/pycharm.sh
+Icon=/usr/local/Soft/pycharm-community-2019.2.3/bin/pycharm.png
+Terminal=false
+StrtupNotify=true
+Type=Application
+Categories=Application;
+
+进入pycharm-community-2019.2.3目录：chmod a+x /usr/share/applications/pycharm.desktop
+把usr/share/applications下的图标复制到桌面上，并且添加信任。
+
+进入设置配置python3,选择python3.8目录：/user/local/bin/python3.8
+
+
