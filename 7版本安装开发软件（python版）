@@ -3,8 +3,7 @@ rpm -qa | grep mariadb 查看已安装的mariadb
 删除：rpm -e --nodeps mariadb名称
 再查看一次：rpm -qa | grep mariadb 看是否存在
 
-yum clean all
-yum makecache
+yum  update -y
 
 1：安装libffi-devel包
 wget http://mirror.centos.org/centos/7/os/x86_64/Packages/libffi-devel-3.0.13-18.el7.x86_64.rpm
@@ -12,6 +11,22 @@ rpm -ivh libffi-devel-3.0.13-18.el7.x86_64.rpm
 
 2：安装gcc
 yum install -y gcc gcc-c++ openssl-devel zlib-devel
+
+3：安装sqlite3
+wget https://www.sqlite.org/2019/sqlite-autoconf-3300100.tar.gz
+tar -zxvf sqlite-autoconf-3300100.tar.gz
+cd sqlite-autoconf-3300100
+./configure --prefix=/usr/local
+make && make install
+vim ~/.bashrc
+按i键进行编辑
+在最后一行插入export LD_LIBRARY_PATH="/usr/local/lib"
+按esc键然后按：wq进行保存退出
+mv /usr/bin/sqlite3  /usr/bin/sqlite3_old
+ln -s /usr/local/bin/sqlite3  /usr/bin/sqlite3
+
+4:安装vim
+yum -y install vim*
 
 一、安装mysql8.0.17
 1：进入/usr/local目录下 ,创建mysql文件夹
@@ -72,19 +87,49 @@ wget https://www.python.org/ftp/python/3.8.0/Python-3.8.0b2.tgz
 tar -zxvf Python-3.8.0b2.tgz
 cd Python-3.8.0b2
 mkdir /usr/local/python3
-./configure --prefix=/usr/local/python3
+./configure --prefix=/usr/local/python3/ --enable-optimizations --enable-loadable-sqlite-extensions
 make && make install
 设置软链接:ln -s /usr/local/python3/bin/python3.8 /usr/bin/python3
 测试：python3
+import sqlite3
+sqlite3.sqlite_version
 [os8版本执行：yum install make]
 
-四、安装pycharm
+四、安装python3.7.5
+安装openssl
+wget https://www.openssl.org/source/openssl-1.1.1c.tar.gz
+tar xf openssl-1.1.1c.tar.gz
+cd openssl-1.1.1c/
+./config --prefix=/usr/local/openssl
+make
+make install
+mv /usr/bin/openssl{,.bak}
+ln -s /usr/local/openssl/include/openssl /usr/include/openssl
+ln -s /usr/local/openssl/lib/libssl.so.1.1 /usr/local/lib64/libssl.so
+ln -s /usr/local/openssl/bin/openssl /usr/bin/openssl
+echo "/usr/local/openssl/lib" >>/etc/ld.so.conf
+ldconfig -v
+openssl version
+安装python3.7.5
+wget https://www.python.org/ftp/python/3.7.6/Python-3.7.6.tar.xz
+tar xf Python-3.7.6.tar.xz
+cd Python-3.7.6/
+yum -y install zlib-devel libffi-devel
+./configure --prefix=/usr/local/python3 --with-openssl=/usr/local/openssl
+make && make install
+cd /usr/local/python3/bin/
+ln -s /usr/local/python3/bin/python3 /usr/bin/python3
+echo 'export PATH=/usr/local/python3/bin/:$PATH' >>/etc/profile
+. /etc/profile
+python3 -V
+
+五、安装pycharm
 
 https://blog.csdn.net/bailang_zhizun/article/details/101700519
 
-wget https://download.jetbrains.com/python/pycharm-community-2019.2.3.tar.gz
-tar -zxvf pycharm-community-2019.2.3.tar.gz 
-cd pycharm-community-2019.2.3/
+wget https://download.jetbrains.com/python/pycharm-professional-2019.3.2.tar.gz
+tar -zxvf pycharm-professional-2019.3.2.tar.gz
+cd pycharm-2019.3.2
 cd bin
 ./pycharm.sh
 
@@ -93,14 +138,15 @@ cd bin
 #!/usr/bin/env xdg-open
 [Desktop Entry]
 Encoding=UTF-8
-Name=Pycharm-2019.2.3
-Comment=Pycharm-community-2019.2.3.
-Exec=/usr/local/Soft/pycharm-community-2019.2.3/bin/pycharm.sh
-Icon=/usr/local/Soft/pycharm-community-2019.2.3/bin/pycharm.png
+Name=pycharm-professional-2019.3.2
+Comment=pycharm-professional-2019.3.2.
+Exec=/root/installfiles/pycharm-2019.3.2/bin/pycharm.sh
+#注意软件安装目录
+Icon=/root/installfiles/pycharm-2019.3.2/bin/pycharm.png
 Terminal=false
 StrtupNotify=true
 Type=Application
 Categories=Application;
 
-进入pycharm-community-2019.2.3目录：chmod a+x /usr/share/applications/pycharm.desktop
+进入pycharm-2019.3.2目录：chmod a+x /usr/share/applications/pycharm.desktop
 把usr/share/applications下的图标复制到桌面上，并且添加信任。
