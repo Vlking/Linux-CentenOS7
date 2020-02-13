@@ -2,8 +2,7 @@ rpm -qa | grep mariadb 查看已安装的mariadb
 删除：rpm -e --nodeps mariadb名称
 再查看一次：rpm -qa | grep mariadb 看是否存在
 
-yum clean all
-yum makecache
+yum  update -y
 
 1：安装libffi-devel -y 
 yum install libffi-devel -y 
@@ -14,6 +13,18 @@ yum install -y gcc gcc-c++ openssl-devel zlib-devel
 3.安装make
 yum install make
 
+4：安装sqlite3
+wget https://www.sqlite.org/2019/sqlite-autoconf-3300100.tar.gz
+tar -zxvf sqlite-autoconf-3300100.tar.gz
+cd sqlite-autoconf-3300100
+./configure --prefix=/usr/local
+make && make install
+vim ~/.bashrc
+在最后一行插入export LD_LIBRARY_PATH="/usr/local/lib"
+保存退出
+mv /usr/bin/sqlite3  /usr/bin/sqlite3_old
+ln -s /usr/local/bin/sqlite3  /usr/bin/sqlite3
+
 一、安装mysql
 1：进入/usr/local目录下 ,创建mysql文件夹
 
@@ -21,7 +32,7 @@ yum install make
 wget http://dev.mysql.com/get/Downloads/mysql80-community-release-el8-1.noarch.rpm
 
 3：安装mysql80-community-release-el8-1.noarch.rpm包。
-使用命令 rpm -ivh mysql80-community-release-el8-1.noarch.rpm.rpm
+使用命令 rpm -ivh mysql80-community-release-el8-1.noarch.rpm
 
 4：使用命令 “yum install mysql-server -y”安装mysql。
 
@@ -76,11 +87,8 @@ Type=Application
 Exec=/opt/datagrip/DataGrip-2018.2.4/bin/datagrip.sh 
 Icon=/opt/datagrip/DataGrip-2018.2.4/bin/datagrip.png
 Terminal=false
-
 记得要:wq保存退出
-
 cp /usr/share/applications/DataGrip.Desktop /root/桌面/
-
 chown root /root/桌面/DataGrip.Desktop
 
 
@@ -90,17 +98,19 @@ wget https://www.python.org/ftp/python/3.8.0/Python-3.8.0b2.tgz
 tar -zxvf Python-3.8.0b2.tgz
 cd Python-3.8.0b2
 mkdir /usr/local/python3
-./configure --prefix=/usr/local/python3
-./configure --enable-optimizations
+./configure --prefix=/usr/local/python3/ --enable-optimizations --enable-loadable-sqlite-extensions
 make && make install
 设置软链接:ln -s /usr/local/python3/bin/python3.8 /usr/bin/python3
 测试：python3
+import sqlite3
+sqlite3.sqlite_version
+
+
 
 四、安装pycharm
-
-wget https://download.jetbrains.com/python/pycharm-community-2019.2.3.tar.gz
-tar -zxvf pycharm-community-2019.2.3.tar.gz 
-cd pycharm-community-2019.2.3/
+wget https://download.jetbrains.com/python/pycharm-professional-2019.3.2.tar.gz
+tar -zxvf pycharm-professional-2019.3.2.tar.gz
+cd pycharm-professional-2019.3.2/
 cd bin
 ./pycharm.sh
 
@@ -109,16 +119,17 @@ cd bin
 #!/usr/bin/env xdg-open
 [Desktop Entry]
 Encoding=UTF-8
-Name=Pycharm-2019.2.3
-Comment=Pycharm-community-2019.2.3.
-Exec=/usr/local/Soft/pycharm-community-2019.2.3/bin/pycharm.sh
-Icon=/usr/local/Soft/pycharm-community-2019.2.3/bin/pycharm.png
+Name=pycharm-professional-2019.3.2
+Comment=pycharm-professional-2019.3.2.
+Exec=/usr/local/Soft/pycharm-professional-2019.3.2/bin/pycharm.sh
+#注意软件安装目录
+Icon=/usr/local/Soft/pycharm-professional-2019.3.2/bin/pycharm.png
 Terminal=false
 StrtupNotify=true
 Type=Application
 Categories=Application;
 
-进入pycharm-community-2019.2.3目录：chmod a+x /usr/share/applications/pycharm.desktop
+进入pycharm-professional-2019.3.2目录：chmod a+x /usr/share/applications/pycharm.desktop
 把usr/share/applications下的图标复制到桌面上，并且添加信任。
 
 进入设置配置python3,选择python3.8目录：/user/local/bin/python3.8
