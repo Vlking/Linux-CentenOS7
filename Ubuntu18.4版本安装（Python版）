@@ -101,3 +101,20 @@ make
 sudo make install
 
 python 3.8 在pycharm里目录/usr/local/python3/bin/python3.8
+
+安装nginx依赖包：
+dpkg -l | grep zlib
+sudo apt-get install openssl libssl-dev
+sudo apt-get install libpcre3 libpcre3-dev
+sudo apt-get install zlib1g-dev
+
+安装Nginx1.16.1
+wget http://nginx.org/download/nginx-1.16.1.tar.gz
+tar -zxvf nginx-1.16.1.tar.gz 
+./configure --prefix=/usr/local/nginx 
+make
+make install 
+
+/usr/local/nginx/sbin下执行./nginx
+浏览127.0.0.1
+ps -ef | grep nginx
