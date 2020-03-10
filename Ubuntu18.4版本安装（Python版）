@@ -1,0 +1,103 @@
+sudo passwd：更改root密码
+su：可以直接切换root密码
+apt-get -y install vim:安装编辑文件软件。
+apt-get update
+apt-get upgrade
+
+1.备份原始源 cp /etc/apt/sources.list /etc/apt/sources.list.bak
+2.修改源文件source.list
+（1）终端执行命令：sudo chmod 777 /etc/apt/sources.list更改文件权限使其可编辑；
+（2）执行命令：sudo gedit /etc/apt/sources.list打开文件进行编辑；
+
+deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
+
+软件名 -V是查看是否有安装和软件版本
+安装sqlite3:
+sudo apt-get install sqlite3
+
+
+安装VMwearTools:
+1、点击VMware虚拟机工具栏里的重新安装VMwearTools
+2、把光盘里的安装文件复制到本地进行文件提取
+3、sudo ./vmware-install.pl
+4、第一项选择y，其他所有的选择回车！
+5、重启系统!
+
+安装zlib：sudo apt-get install zlib1g-dev
+Python3-pip安装：sudo apt-get install python3-pip
+sudo apt-get install libffi-dev
+mysql8.0.16稳定版安装：
+打开这个网址   https://dev.mysql.com/downloads/file/?id=487007  下载8.0.16deb文件
+sudo dpkg -i mysql-apt-config_0.8.13-1_all.deb
+选择8.0再选择8.0然后选择ok
+sudo apt update
+sudo apt install mysql-server
+输入两次一样的密码
+选择确定，选择第二项，
+mysql -u root -p
+show variables like '%char%';
+创建用户和密码
+CREATE USER 'root'@'%' IDENTIFIED BY '你的密码';
+权限赋给root用户，所有ip都能连接
+GRANT ALL ON *.* TO 'root'@'%' WITH GRANT OPTION;
+更新root密码否则，远程登录会报错
+ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY '你的密码';
+
+
+PyCharm Pro安装：
+到官网下载
+执行：tar -xzvf pycharm-professional-2019.3.3.tar
+执行：cd pycharm-2019.3.3
+执行：cd bin
+执行：sh ./pycharm.sh
+设置图标
+sudo gedit /usr/share/applications/Pycharm.desktop
+复制以下代码
+[Desktop Entry]
+Type=Application
+Name=Pycharm
+GenericName=Pycharm2018
+Comment=Pycharm2016:The Python IDE
+Exec="/home/new2020/softwear/pycharm-2019.3.3/bin/pycharm.sh" %f
+Icon=/home/new2020/softwear/pycharm-2019.3.3/bin/pycharm.png
+Terminal=pycharm
+Categories=Pycharm;
+
+打开以下目录
+/usr/share/applications/
+复制一份这个pycharm图标到桌面
+
+
+Python安装（可以选择不安装，原因是系统自带python3.6.0）:
+到官网下载安装包，选择第一个Gzip
+https://www.python.org/downloads/release/python-381/
+执行：tar -zxvf Python-3.8.1
+执行：cd Python-3.8.1
+执行：./configure --enable-optimizations
+执行：make -j 2  (注：make -j 2:这个2是使用CPU的2个核心进行构建软件)
+执行：sudo make altinstall
+执行：python3.8 --version
+
+
+wget https://www.python.org/ftp/python/3.8.1/Python-3.8.1.tgz
+tar -xvzf Python-3.8.1.tgz
+cd Python-3.8.1
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get dist-upgrade
+sudo apt-get install libbz2-dev libncurses5-dev libgdbm-dev libgdbm-compat-dev liblzma-dev libsqlite3-dev libssl-dev openssl tk-dev uuid-dev libreadline-dev
+sudo apt-get install libffi-dev
+./configure --prefix=/usr/local/python3
+make
+sudo make install
+
+python 3.8 在pycharm里目录/usr/local/python3/bin/python3.8
