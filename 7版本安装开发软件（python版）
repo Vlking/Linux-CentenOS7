@@ -5,6 +5,8 @@ rpm -qa | grep mariadb 查看已安装的mariadb
 
 yum  update -y
 
+yum -y install gcc pcre pcre-devel zlib zlib-devel openssl openssl-devel
+
 1：安装libffi-devel包
 wget http://mirror.centos.org/centos/7/os/x86_64/Packages/libffi-devel-3.0.13-18.el7.x86_64.rpm
 rpm -ivh libffi-devel-3.0.13-18.el7.x86_64.rpm
@@ -110,7 +112,8 @@ ln -s /usr/local/openssl/bin/openssl /usr/bin/openssl
 echo "/usr/local/openssl/lib" >>/etc/ld.so.conf
 ldconfig -v
 openssl version
-安装python3.7.5
+
+安装python3.7.6
 wget https://www.python.org/ftp/python/3.7.6/Python-3.7.6.tar.xz
 tar xf Python-3.7.6.tar.xz
 cd Python-3.7.6/
@@ -127,9 +130,9 @@ python3 -V
 
 https://blog.csdn.net/bailang_zhizun/article/details/101700519
 
-wget https://download.jetbrains.com/python/pycharm-professional-2019.3.2.tar.gz
-tar -zxvf pycharm-professional-2019.3.2.tar.gz
-cd pycharm-2019.3.2
+wget https://download.jetbrains.com/python/pycharm-professional-2019.3.3.tar.gz
+tar -zxvf pycharm-professional-2019.3.3.tar.gz
+cd pycharm-2019.3.3
 cd bin
 ./pycharm.sh
 
@@ -138,15 +141,42 @@ cd bin
 #!/usr/bin/env xdg-open
 [Desktop Entry]
 Encoding=UTF-8
-Name=pycharm-professional-2019.3.2
-Comment=pycharm-professional-2019.3.2.
-Exec=/root/installfiles/pycharm-2019.3.2/bin/pycharm.sh
+Name=pycharm-professional-2019.3.3
+Comment=pycharm-professional-2019.3.3.
+Exec=/root/softwear/pycharm-2019.3.3/bin/pycharm.sh
 #注意软件安装目录
-Icon=/root/installfiles/pycharm-2019.3.2/bin/pycharm.png
+Icon=/root/softwear/pycharm-2019.3.3/bin/pycharm.png
 Terminal=false
 StrtupNotify=true
 Type=Application
 Categories=Application;
 
-进入pycharm-2019.3.2目录：chmod a+x /usr/share/applications/pycharm.desktop
+进入pycharm-2019.3.3目录：chmod a+x /usr/share/applications/pycharm.desktop
 把usr/share/applications下的图标复制到桌面上，并且添加信任。
+
+pycharm创建django选择python版本目录：
+/usr/local/python3/bin/python3.7
+
+六：安装pcre8.33
+cd /usr/local/
+wget http://jaist.dl.sourceforge.net/project/pcre/pcre/8.33/pcre-8.33.tar.gz
+tar -zxvf pcre-8.33.tar.gz
+cd pcre-8.33
+./configure
+make && make install
+
+七：安装zlib
+wget http://zlib.net/zlib-1.2.11.tar.gz
+tar -zxvf zlib-1.2.11.tar.gz
+cd zlib-1.2.11
+./configure
+make && make install
+
+八、安装nginx
+wget http://nginx.org/download/nginx-1.16.1.tar.gz
+tar -zxvf nginx-1.16.1.tar.gz
+cd nginx-1.16.1/
+./configure --user=nobody --group=nobody --prefix=/usr/local/nginx --with-pcre=/root/softwear/pcre-8.33 --with-zlib=/root/softwear/zlib-1.2.11 --with-http_stub_status_module --with-http_gzip_static_module --with-http_realip_module --with-http_sub_module --with-http_ssl_module
+make && make install
+cd /usr/local/nginx/sbin/
+./nginx
